@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+python-dotenv
+pydantic-settings
+loguru
+aiogram
+python-multipart
+python-telegram-bot
