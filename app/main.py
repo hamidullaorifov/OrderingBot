@@ -10,15 +10,6 @@ from app.handlers import start_handler
 # Register handlers
 dp.include_router(start_handler.router)
 
-# @asynccontextmanager
-# async def lifespan(app: FastAPI):
-#     print("🚀 Bot is starting...")
-#     polling_task = asyncio.create_task(dp.start_polling(bot))
-#     yield  # <-- App runs while this block is open
-#     print("🛑 Shutting down bot...")
-#     polling_task.cancel()
-#     await bot.session.close()
-
 app = FastAPI(title="Form to Telegram API (aiogram)")
 
 @app.post("/submit")
@@ -27,7 +18,7 @@ async def submit_form(form: FormData):
     try:
         message = (
             f"📩 <b>New Form Submission</b>\n\n"
-            f"<b>Name:</b> {form.first_name} {form.last_name}\n"
+            f"<b>Name:</b> {form.full_name}\n"
             f"<b>Phone:</b> {form.phone_number}\n"
             f"<b>Message:</b>\n{form.comment}"
         )
