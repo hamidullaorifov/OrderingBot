@@ -7,6 +7,8 @@ from app.schemas import FormData
 from app.bot import bot, dp
 from app.handlers import start_handler
 
+CHAT_IDS = ['388115743', '7550484867', '5774623098']
+
 # Register handlers
 dp.include_router(start_handler.router)
 
@@ -22,13 +24,15 @@ async def submit_form(form: FormData):
             f"<b>Phone:</b> {form.phone_number}\n"
             f"<b>Message:</b>\n{form.comment}"
         )
-        print('---> chat_id: ', settings.TELEGRAM_OWNER_ID)
-        await bot.send_message(
-            chat_id=settings.TELEGRAM_OWNER_ID,
-            text=message,
-            parse_mode="HTML"
-        )
-
+        for chat_id in CHAT_IDS:
+            try:
+                await bot.send_message(
+                    chat_id=chat_id,
+                    text=message,
+                    parse_mode="HTML"
+                )
+            except Exception as e:
+                print("Exception occured:", e)
         return {"success": True, "message": "Form sent successfully"}
 
     except TelegramBadRequest as e:
