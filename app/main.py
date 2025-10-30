@@ -1,11 +1,9 @@
-import asyncio
-from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 from aiogram.exceptions import TelegramBadRequest
-from app.config import settings
 from app.schemas import FormData
 from app.bot import bot, dp
 from app.handlers import start_handler
+from fastapi.middleware.cors import CORSMiddleware
 
 CHAT_IDS = ['388115743', '7550484867', '5774623098']
 
@@ -13,6 +11,18 @@ CHAT_IDS = ['388115743', '7550484867', '5774623098']
 dp.include_router(start_handler.router)
 
 app = FastAPI(title="Form to Telegram API (aiogram)")
+
+origins = [
+    "*"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/submit")
 async def submit_form(form: FormData):
